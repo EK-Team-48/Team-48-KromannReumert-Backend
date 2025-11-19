@@ -1,6 +1,6 @@
 # Legal Task Tracker -- Prototype
 
-A prototype built for one of Denmark's leading law firms.\
+A prototype built for a company
 The system focuses on granular task management inside legal casework,
 supported by audit trails, role-based access, and full governance
 alignment.
