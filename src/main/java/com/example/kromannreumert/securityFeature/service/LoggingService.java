@@ -24,5 +24,9 @@ public class LoggingService {
     public List<Logging> getAllLogs() {
         return logRepository.findAll();
     }
+
+    public List<Logging> getAllLogsByAction(LogAction action) {
+        return logRepository.findAllByAction(action);
+    }
 }
 
