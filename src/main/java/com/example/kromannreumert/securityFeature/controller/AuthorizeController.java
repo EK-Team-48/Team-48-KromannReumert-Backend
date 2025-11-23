@@ -21,7 +21,7 @@ import java.util.List;
 // ADD @EnableMethodSecurity
 public class AuthorizeController {
 
-    private static Logger log = LoggerFactory.getLogger(AuthorizeController.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthorizeController.class);
     private final UserService userService;
     private final LoginService loginService;
 
@@ -50,9 +50,11 @@ public class AuthorizeController {
     @PostMapping("/create")
     public ResponseEntity<?> createAccount(@RequestBody User user) {
         try {
+            log.info("User created controller accessed by {}", user.getName());
             userService.createUser(user);
             return ResponseEntity.ok("User created: " + user.getName());
         } catch (RuntimeException e) {
+            log.error("Could not create user {}", user.getName());
             return new ResponseEntity<>("Could not create user",HttpStatus.BAD_REQUEST);
         }
 
