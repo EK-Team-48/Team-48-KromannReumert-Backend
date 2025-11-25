@@ -1,4 +1,4 @@
-package com.example.kromannreumert.unitTest;
+package com.example.kromannreumert.unitTest.logging;
 
 import com.example.kromannreumert.logging.entity.LogAction;
 import com.example.kromannreumert.logging.entity.Logging;
