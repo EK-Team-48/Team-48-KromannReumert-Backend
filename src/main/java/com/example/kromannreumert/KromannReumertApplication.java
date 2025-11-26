@@ -26,19 +26,21 @@ public class KromannReumertApplication {
     CommandLineRunner loadTestData(UserRepository userRepo, RoleRepository roleRepository) {
         return args -> {
 
+            // Create Roles in DB
             Date now = new Date(2025-11-25L);
-            Role admin = new Role(null,"ADMIN");
-            Role user  = new Role(null, "USER");
-            roleRepository.save(admin);
-            roleRepository.save(user);
+            Role admin = roleRepository.save(new Role(null,"ADMIN"));
+            Role partner  = roleRepository.save(new Role(null, "PARTNER"));
+            Role sagsbehandler  = roleRepository.save(new Role(null, "SAGSBEHANDLER"));
+            Role jurist  = roleRepository.save(new Role(null, "JURIST"));
 
 
-            User u = new User(null,"testuser","test","test@test.dk","test", now,Set.of(admin,user));
-            u.setUsername("testuser");
-            u.setPassword("password");
-            u.setRoles(Set.of(admin, user));
 
-            userRepo.save(u);
+            // CREATE User in DB
+            userRepo.save(new User(null,"testAdmin","test","test@test.dk","test", now,Set.of(admin)));
+            userRepo.save(new User(null,"testPartner","test","test@test.dk","test", now,Set.of(partner)));
+            userRepo.save(new User(null,"testSagsbehandler","test","test@test.dk","test", now,Set.of(sagsbehandler)));
+            userRepo.save(new User(null,"testJurist","test","test@test.dk","test", now,Set.of(jurist)));
+
 
             System.out.println("Test data indlæst i databasen");
         };

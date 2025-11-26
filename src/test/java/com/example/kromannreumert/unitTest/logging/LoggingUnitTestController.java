@@ -1,4 +1,4 @@
-package com.example.kromannreumert.unitTest;
+package com.example.kromannreumert.unitTest.logging;
 
 import com.example.kromannreumert.security.config.SecurityConfig;
 import com.example.kromannreumert.logging.controller.LogController;
