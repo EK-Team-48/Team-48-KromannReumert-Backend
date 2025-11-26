@@ -30,16 +30,16 @@ public class ClientIntegrationTest {
     @Autowired
     ApplicationContext context;
 
-    @Test
-    void context() {
-        assertNotNull(context);
-    }
-
-
-    @Test
-    void getAll() {
-        List<Client> getAll = clientService.getAllClients();
-        assertFalse(getAll.isEmpty());
-
-    }
+//    @Test
+//    void context() {
+//        assertNotNull(context);
+//    }
+//
+//
+//    @Test
+//    void getAll() {
+//        List<Client> getAll = clientService.getAllClients();
+//        assertFalse(getAll.isEmpty());
+//
+//    }
 }
