@@ -1,13 +1,22 @@
 package com.example.kromannreumert.client.service;
 
-import com.example.kromannreumert.client.DTO.CreateClientDTO;
+import com.example.kromannreumert.client.DTO.ClientResponeDTO;
+import com.example.kromannreumert.client.DTO.ClientRequestDTO;
 import com.example.kromannreumert.client.DTO.UpdateClientIdPrefixDTO;
 import com.example.kromannreumert.client.DTO.UpdateClientNameDTO;
 import com.example.kromannreumert.client.entity.Client;
+import com.example.kromannreumert.client.mapper.ClientMapper;
 import com.example.kromannreumert.client.repository.ClientRepository;
+import com.example.kromannreumert.user.entity.User;
+import com.example.kromannreumert.user.repository.UserRepository;
+import com.example.kromannreumert.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ClientService {
@@ -15,28 +24,41 @@ public class ClientService {
 
     //TODO add method to make it possible to add users to the Client
 
-
+    private final static Logger log = LoggerFactory.getLogger(ClientService.class);
     private final ClientRepository clientRepository;
+    private final ClientMapper clientMapper;
+    private final UserRepository userRepository;
 
-    public ClientService(ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository, ClientMapper clientMapper, UserRepository userRepository) {
         this.clientRepository = clientRepository;
+        this.clientMapper = clientMapper;
+        this.userRepository = userRepository;
     }
 
-    public List<Client> getAllClients() {
-        return clientRepository.findAll();
+    public List<ClientResponeDTO> getAllClients() {
+        List<Client> clients = clientRepository.findAll();
+        return clients.stream().map(clientMapper::toClientDTO).toList();
     }
 
-    public Client getClientByIdPrefix(Long idPrefix){
-        return clientRepository.getClientByIDPrefix(idPrefix).orElseThrow(() -> new RuntimeException("Client not found"));
+    public ClientResponeDTO getClientByIdPrefix(Long idPrefix){
+        Client client = clientRepository.getClientByIDPrefix(idPrefix).orElseThrow(() -> new RuntimeException("Client not found"));
+        return clientMapper.toClientDTO(client);
     }
 
-    public Client getClientByName(String clientName) {
-        return clientRepository.findClientByName(clientName).orElseThrow(() -> new RuntimeException("Client not found"));
+    public ClientResponeDTO getClientByName(String clientName) {
+        Client client = clientRepository.findClientByName(clientName).orElseThrow(() -> new RuntimeException("Client not found"));
+        return clientMapper.toClientDTO(client);
     }
 
-    public String addClient(CreateClientDTO client) {
+    public String addClient(ClientRequestDTO client) {
         try {
-            Client createClient = new Client(null, client.clientName(), client.users(), client.idPrefix());
+
+            Set<User> users = client.users().stream()
+                    .map(username -> userRepository.findByUsername(username)
+                            .orElseThrow(() -> new RuntimeException("User not found: " + username)))
+                    .collect(Collectors.toSet());
+
+            Client createClient = new Client(null, client.clientName(), users, client.idPrefix());
             clientRepository.save(createClient);
             // add success log here
             return "Client successfully created: " + createClient.getName();
@@ -48,17 +70,21 @@ public class ClientService {
 
 
     // Single responsibility -> that is why I do not combine it with the method below
-    public Client updateClientName(UpdateClientNameDTO updateClient, String clientName) {
-        Client updatedClient = clientRepository.findClientByName(clientName).orElseThrow(() -> new RuntimeException("Client not found"));
-        updatedClient.setName(updateClient.name());
-        return clientRepository.save(updatedClient);
+    public String updateClientName(UpdateClientNameDTO updateClient) {
+        Client updatedClient = clientRepository.findClientByName(updateClient.oldName()).orElseThrow(() -> new RuntimeException("Client not found"));
+        updatedClient.setName(updateClient.newName());
+        clientRepository.save(updatedClient);
+        return "Successfully updated client with: " + updateClient.newName();
+
     }
 
     // Single responsibility -> that is why I do not combine it with the method below
-    public Client updateClientIdPrefix(String clientName, UpdateClientIdPrefixDTO updateClientIdPrefixDTO) {
-        Client updatedClientId = clientRepository.findClientByName(clientName).orElseThrow(() -> new RuntimeException("Client not found"));
-        updatedClientId.setIDPrefix(updateClientIdPrefixDTO.idPrefix());
-        return clientRepository.save(updatedClientId);
+    public String updateClientIdPrefix(UpdateClientIdPrefixDTO updateClient) {
+        Client updatedClientId = clientRepository.findClientByName(updateClient.clientName()).orElseThrow(() -> new RuntimeException("Client not found"));
+        updatedClientId.setIDPrefix(updateClient.idPrefix());
+        clientRepository.save(updatedClientId);
+
+        return "Successfully updated client with: " + updateClient.idPrefix();
     }
 
     public String deleteClient(Long id) {

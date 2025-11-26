@@ -2,10 +2,6 @@ package com.example.kromannreumert.casee.service;
 
 import com.example.kromannreumert.casee.entity.Casee;
 import com.example.kromannreumert.casee.repository.CaseRepository;
-import com.example.kromannreumert.client.DTO.CreateClientDTO;
-import com.example.kromannreumert.client.DTO.UpdateClientIdPrefixDTO;
-import com.example.kromannreumert.client.DTO.UpdateClientNameDTO;
-import com.example.kromannreumert.client.entity.Client;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

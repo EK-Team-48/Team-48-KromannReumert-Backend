@@ -31,6 +31,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/manager/**").hasRole("MANAGER")
+                        .requestMatchers("/api/v1/client/**").hasRole("SAGSBEHANDLER")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(
                         oauth -> oauth.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
