@@ -4,7 +4,6 @@ import com.example.kromannreumert.user.entity.User;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 public record ToDoResponseDto(
