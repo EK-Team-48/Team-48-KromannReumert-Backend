@@ -31,6 +31,7 @@ public class UserUnitTestController {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/user"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
+    
 
     @Test
     void getAllUsersNotLoggedIn() throws Exception{
