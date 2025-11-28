@@ -3,6 +3,7 @@ package com.example.kromannreumert.security.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,6 +21,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
@@ -30,8 +32,7 @@ public class SecurityConfig {
                         .permitAll()
 
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/manager/**").hasRole("MANAGER")
-                        .requestMatchers("/api/v1/client/**").hasRole("SAGSBEHANDLER")
+                        .requestMatchers("/api/v1/client/**").hasAnyRole("SAGSBEHANDLER", "PARTNER", "ADMIN") // <-- Only the correct role can access
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(
                         oauth -> oauth.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));

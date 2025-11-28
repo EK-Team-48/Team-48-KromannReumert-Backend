@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/client/")
+@CrossOrigin(origins = "*")
 public class ClientController {
 
     private final ClientService clientService;
@@ -22,7 +23,11 @@ public class ClientController {
 
     @GetMapping("")
     public ResponseEntity<?> getAllClients() {
-        return new ResponseEntity<>(clientService.getAllClients(), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(clientService.getAllClients(), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("Could not fetch all clients: " + e.getMessage(), HttpStatus.NO_CONTENT);
+        }
     }
 
     @GetMapping("/{idprefix}")
@@ -72,7 +77,6 @@ public class ClientController {
 
    @PutMapping("/update/users")
    public ResponseEntity<?> updateClientUsers(@RequestBody UpdateClientUserList clientUserList) {
-       System.out.println(clientUserList);
        try {
            return new ResponseEntity<>(clientService.updateClientUserList(clientUserList), HttpStatus.OK);
        } catch (RuntimeException e) {
@@ -87,5 +91,13 @@ public class ClientController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>("Failed to retrieve the client user list", HttpStatus.BAD_REQUEST);
         }
+   }
+   @GetMapping("/size")
+    public ResponseEntity<?> getClientSize() {
+       try {
+           return new ResponseEntity<>(clientService.getClientSize(), HttpStatus.OK);
+       } catch (RuntimeException e) {
+           return new ResponseEntity<>("Failed to retrieve the client user list", HttpStatus.BAD_REQUEST);
+       }
    }
 }
