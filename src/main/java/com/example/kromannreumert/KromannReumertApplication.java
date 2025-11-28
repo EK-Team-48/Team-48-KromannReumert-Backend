@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -21,9 +22,15 @@ import java.util.Set;
 @SpringBootApplication
 public class KromannReumertApplication {
 
+    public KromannReumertApplication(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(KromannReumertApplication.class, args);
     }
+
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     @Profile("!test")
@@ -40,10 +47,10 @@ public class KromannReumertApplication {
 
 
             // CREATE User in DB
-            userRepo.save(new User(null,"testAdmin","test","test@test.dk","test", now,Set.of(admin)));
-            userRepo.save(new User(null,"testPartner","test","test@test.dk","test", now,Set.of(partner)));
-            userRepo.save(new User(null,"testSagsbehandler","test","test@test.dk","test", now,Set.of(sagsbehandler)));
-            userRepo.save(new User(null,"testJurist","test","test@test.dk","test", now,Set.of(jurist)));
+            userRepo.save(new User(null,"testAdmin","test","test@test.dk", passwordEncoder.encode( "test"), now,Set.of(admin)));
+            userRepo.save(new User(null,"testPartner","test","test@test.dk",passwordEncoder.encode("test"), now,Set.of(partner)));
+            userRepo.save(new User(null,"testSagsbehandler","test","test@test.dk",passwordEncoder.encode("test"), now,Set.of(sagsbehandler)));
+            userRepo.save(new User(null,"testJurist","test","test@test.dk",passwordEncoder.encode("test"), now,Set.of(jurist)));
 
             clientRepository.save(new Client(null, "Zahaa Enterprise", Set.of(user), 99000L));
             clientRepository.save(new Client(null, "Hannibal Enterprise", Set.of(user), 99001L));
