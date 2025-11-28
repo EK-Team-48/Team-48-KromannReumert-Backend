@@ -1,15 +1,13 @@
 package com.example.kromannreumert.todo.controller;
 
 import com.example.kromannreumert.todo.dto.ToDoResponseDto;
+import com.example.kromannreumert.todo.dto.TodoRequestDto;
 import com.example.kromannreumert.todo.service.ToDoService;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.security.Principal;
 import java.util.List;
 
@@ -28,9 +26,50 @@ public class ToDoController {
     public ResponseEntity<List<ToDoResponseDto>> findAll(Principal principal) {
         try {
             List<ToDoResponseDto> responseDtos = toDoService.findAll(principal.getName());
-            return new ResponseEntity<>(responseDtos, HttpStatus.OK);
+            return ResponseEntity.ok(responseDtos);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/todos/{id}")
+    public ResponseEntity<ToDoResponseDto> findById(@PathVariable Long id, Principal principal) {
+        try {
+            ToDoResponseDto responseDto = toDoService.findToDoById(principal.getName(),id);
+            return ResponseEntity.ok(responseDto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @PostMapping("/todos")
+    public ResponseEntity<ToDoResponseDto> createToDo(@RequestBody TodoRequestDto todoRequestDto, Principal principal) {
+        try {
+            ToDoResponseDto responseDto = toDoService.createToDo(principal.getName(), todoRequestDto);
+            URI location = URI.create("/todos" + responseDto.id());
+            return ResponseEntity.created(location).body(responseDto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("/todos/{id}")
+    public ResponseEntity<Void> deleteToDo(@PathVariable Long id, Principal principal) {
+        try {
+            toDoService.deleteTodo(principal.getName(),id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/todos/{id}")
+    public ResponseEntity<ToDoResponseDto> updateTodo(@PathVariable Long id, @RequestBody TodoRequestDto todoRequestDto, Principal principal) {
+        try {
+            ToDoResponseDto toDoResponseDto = toDoService.updateTodo(id, principal.getName(), todoRequestDto);
+            return ResponseEntity.ok(toDoResponseDto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }
