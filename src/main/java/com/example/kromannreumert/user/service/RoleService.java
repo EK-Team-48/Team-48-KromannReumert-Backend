@@ -46,6 +46,8 @@ public class RoleService {
             throw new RuntimeException("could not view the roles");
         }
     }
+
+    //nedenstående er til frontend
     public RoleResponseDTO getRolebyRoleId(int roleId, String name) {
         try {
             Optional<Role> role = roleRepository.findById(roleId);
@@ -62,6 +64,12 @@ public class RoleService {
             throw new RuntimeException("could not get role by role id");
         }
     }
+    //nedenstående er til usermapper
+    public Role getRoleById(int id){
+        Optional<Role> role = roleRepository.findById(id);
+        return role.get();
+    }
+
     public RoleResponseDTO createRole(RoleRequestDTO roleRequestDTO, String name) {
         try {
             Role role = new Role(
@@ -103,7 +111,6 @@ public class RoleService {
         }
     }
 
-    //her skal rollen måske arkiveres og ikke slettes?
     public void deleteRole(int roleId, String name) {
         try {
             roleRepository.deleteById(roleId);
