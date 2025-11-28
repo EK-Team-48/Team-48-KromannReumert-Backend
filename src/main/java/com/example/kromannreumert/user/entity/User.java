@@ -49,4 +49,12 @@ public class User {
     )
     private Set<Role> roles;
 
+
+    public User(String username, String email, String name, String password, Set<Role> roles) {
+        this.username = username;
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.roles = roles;
+    }
 }

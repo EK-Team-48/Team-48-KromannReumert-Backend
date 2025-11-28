@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/auth")
 // ADD @EnableMethodSecurity
@@ -46,10 +48,10 @@ public class AuthorizeController {
     an unauthorized jwt token they will get denied
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createAccount(@RequestBody User user) {
+    public ResponseEntity<?> createAccount(@RequestBody User user, Principal principal) {
         try {
             log.info("User created controller accessed by {}", user.getName());
-            String test = userService.createUser(user);
+            String test = userService.createUser(user, principal.getName());
             return ResponseEntity.ok(test);
         } catch (RuntimeException e) {
             log.error("Could not create user {}", user.getName());
