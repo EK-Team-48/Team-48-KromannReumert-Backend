@@ -31,13 +31,16 @@ public class SecurityConfig {
                                 "/h2-console/**")
                         .permitAll()
 
-                        //giver Sagsbehandler specifikt adgang til GET endpoints i /clients
-                        .requestMatchers(HttpMethod.GET, "/api/v1/clients/**").hasRole("SAGSBEHANDLER")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/cases/**").hasRole("JURIST")
-
-                        .requestMatchers("/api/v1/clients/**").hasRole("PARTNER")
+                        .requestMatchers("/api/v1/client/**").hasAnyRole("ADMIN", "PARTNER", "SAGSBEHANDLER") // <--- 2) This
                         .requestMatchers("/api/v1/cases/**").hasAnyRole("PARTNER", "SAGSBEHANDLER")
                         .requestMatchers("/api/v1/todos/**").hasAnyRole("PARTNER", "SAGSBEHANDLER", "JURIST")
+
+                        // Had to change the order for it to work dont know why
+
+                        .requestMatchers(HttpMethod.GET, "/api/v1/client/**").hasRole("SAGSBEHANDLER")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/cases/**").hasRole("JURIST")
+
+                        .requestMatchers("/api/v1/**").hasRole("ADMIN") // <--- 1) This doesn't work without
 
                         .anyRequest().authenticated())
 

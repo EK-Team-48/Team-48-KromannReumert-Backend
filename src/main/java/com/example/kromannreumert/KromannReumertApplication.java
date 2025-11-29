@@ -57,7 +57,7 @@ public class KromannReumertApplication {
             clientRepository.save(new Client(null, "Hannibal Enterprise", Set.of(user), 99001L));
             clientRepository.save(new Client(null, "Victor Enterprise", Set.of(user), 99002L));
             clientRepository.save(new Client(null, "MonneDev Enterprise", Set.of(user), 99003L));
-            clientRepository.save(new Client(null, "Kromann Reumert", Set.of(user), 99004L));
+            clientRepository.save(new Client(null, "Kromann", Set.of(user), 99004L));
 
 
             System.out.println("Test data indlæst i databasen");
