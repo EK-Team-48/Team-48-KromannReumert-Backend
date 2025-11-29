@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class KromannReumertApplication {
         return args -> {
 
             // Create Roles in DB
-            Date now = new Date(2025-11-25L);
+            LocalDateTime now = LocalDateTime.now();
             Role admin = roleRepository.save(new Role(null,"ADMIN"));
             Role partner  = roleRepository.save(new Role(null, "PARTNER"));
             Role sagsbehandler  = roleRepository.save(new Role(null, "SAGSBEHANDLER"));

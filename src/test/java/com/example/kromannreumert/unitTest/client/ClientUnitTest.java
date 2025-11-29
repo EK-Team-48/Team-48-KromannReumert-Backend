@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
 
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -72,7 +73,7 @@ public class ClientUnitTest {
     void should_return_converted_client_to_DTO() {
 
         // ARRANGE
-        Date now = new Date(2025-11-25);
+        LocalDateTime now = LocalDateTime.now();
         Long idPrefix = 1000L;
         String clientName = "ClientTestName";
         Set<User> addUsers = Set.of(
