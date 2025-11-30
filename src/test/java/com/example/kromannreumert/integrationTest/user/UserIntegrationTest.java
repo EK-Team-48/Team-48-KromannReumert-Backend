@@ -1,4 +1,4 @@
-package com.example.kromannreumert.integrationTest.client.user;
+package com.example.kromannreumert.integrationTest.user;
 
 import jakarta.transaction.Transactional;
 import org.springframework.boot.test.context.SpringBootTest;

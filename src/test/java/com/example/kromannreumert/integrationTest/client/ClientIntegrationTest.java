@@ -1,6 +1,5 @@
 package com.example.kromannreumert.integrationTest.client;
 
-import com.example.kromannreumert.client.entity.Client;
 import com.example.kromannreumert.client.repository.ClientRepository;
 import com.example.kromannreumert.client.service.ClientService;
 import jakarta.transaction.Transactional;
@@ -11,9 +10,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-
-import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("test")
