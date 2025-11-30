@@ -27,12 +27,12 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers(principal.getName()));
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<UserResponseDTO>getUserById(@PathVariable int userId, Principal principal){
         return new ResponseEntity<>(userService.getUserByUserId(userId, principal.getName()), HttpStatus.OK);
     }
 
-    @PutMapping("{userId}")
+    @PutMapping("/{userId}")
     public ResponseEntity<UserResponseDTO>updateUser(@PathVariable int userId, @RequestBody UserRequestDTO userRequestDTO, Principal principal){
         if(userId != 0 && userRequestDTO != null && userService.getUserByUserId(userId, principal.getName()) != null){
             return new ResponseEntity<>(userService.updateUser(userId, userRequestDTO, principal.getName()), HttpStatus.OK);
@@ -40,7 +40,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @DeleteMapping("{userId}")
+    @DeleteMapping("/{userId}")
     public ResponseEntity<String>deleteUser(@PathVariable int userId, Principal principal){
         if(userId != 0 && userService.getUserByUserId(userId, principal.getName()) != null){
             userService.deleteUser(userId, principal.getName());

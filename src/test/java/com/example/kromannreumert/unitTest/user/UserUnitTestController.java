@@ -55,6 +55,28 @@ public class UserUnitTestController {
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
+    //de tre nedestående test, de tester at auth virker for user, da man får 403(forbidden) i stedet for 401(unAuthorized), som ovenover
+    @Test
+    @WithMockUser(roles = "PARTNER")
+    void getAllUsersWhileLoggedInAsPartner() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/user"))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+    @Test
+    @WithMockUser(roles = "SAGSBEHANDLER")
+    void getAllUsersWhileLoggedInAsSagsbehandler() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/user"))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+    @Test
+    @WithMockUser(roles = "JURIST")
+    void getAllUsersWhileLoggedInAsJurist() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/user"))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+
+
     @Test
     @WithMockUser(roles = "ADMIN")
     void getUserByIdWhileLoggedIn() throws Exception{
