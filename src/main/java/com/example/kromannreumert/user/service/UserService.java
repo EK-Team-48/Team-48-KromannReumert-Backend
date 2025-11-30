@@ -158,5 +158,9 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public int getNumberOfAllUsers() {
+        return userRepository.findAll().size();
+    }
+
 
 }
