@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -39,7 +40,7 @@ public class User {
     private String password;
 
     @NotNull
-    private Date createdDate;
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -49,4 +50,12 @@ public class User {
     )
     private Set<Role> roles;
 
+
+    public User(String username, String email, String name, String password, Set<Role> roles) {
+        this.username = username;
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.roles = roles;
+    }
 }
