@@ -24,8 +24,8 @@ public class UserMapper {
 
         return new User(
                 userRequestDTO.username(),
-                userRequestDTO.name(),
                 userRequestDTO.email(),
+                userRequestDTO.name(),
                 userRequestDTO.password(),
                 roles
         );

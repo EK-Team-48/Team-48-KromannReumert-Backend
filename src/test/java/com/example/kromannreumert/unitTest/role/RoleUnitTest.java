@@ -65,7 +65,7 @@ public class RoleUnitTest {
         //ASSERT
         assertNotNull(result);
         assertEquals(4, result.size());
-        assertEquals("ADMIN", result.get(0).role());
+        assertEquals("ADMIN", result.get(0).roleName());
         assertEquals(1L, result.get(0).id());
 
         //VERIFY
@@ -93,7 +93,7 @@ public class RoleUnitTest {
 
         //ASSERT
         assertNotNull(response);
-        assertEquals("ADMIN", response.role());
+        assertEquals("ADMIN", response.roleName());
         assertEquals(1L, response.id());
 
 
