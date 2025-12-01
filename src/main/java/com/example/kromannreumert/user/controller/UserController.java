@@ -50,5 +50,9 @@ public class UserController {
         }
     }
 
+    @GetMapping("/size")
+    public ResponseEntity<?> getUserNumber() {
+        return new ResponseEntity<>(userService.getNumberOfAllUsers(), HttpStatus.OK);
+    }
 
 }

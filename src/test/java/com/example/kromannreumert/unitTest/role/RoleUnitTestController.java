@@ -33,11 +33,8 @@ public class RoleUnitTestController {
     @MockitoBean
     RoleService roleService;
 
-
     @Autowired
     ObjectMapper objectMapper;
-
-
 
     @Test
     @WithMockUser(roles = "ADMIN")
@@ -51,7 +48,6 @@ public class RoleUnitTestController {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/role"))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
-
 
     //De tre nedenstående test bekræfter at role auth virker, fordi den giver en 403 i stedet for 401, som ovenover
     @Test
@@ -168,11 +164,4 @@ public class RoleUnitTestController {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/role/1"))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
-
-
-
-
-
-
-
 }

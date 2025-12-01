@@ -35,7 +35,7 @@ public class ClientController {
         try {
             return new ResponseEntity<>(clientService.getClientByIdPrefix(idprefix), HttpStatus.OK);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>("Client not found by id: " + idprefix, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Client not found by id: " + idprefix, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -44,14 +44,14 @@ public class ClientController {
         try {
             return new ResponseEntity<>(clientService.getClientByName(clientName), HttpStatus.OK);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>("Client not found by client name: " + clientName, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Client not found by client name: " + clientName, HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> addClient(@RequestBody ClientRequestDTO clientRequestDTO) {
         try {
-            return new ResponseEntity<>(clientService.addClient(clientRequestDTO), HttpStatus.OK);
+            return new ResponseEntity<>(clientService.addClient(clientRequestDTO), HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>("Failed to create the client: " + clientRequestDTO.clientName(), HttpStatus.BAD_REQUEST);
         }
@@ -90,7 +90,7 @@ public class ClientController {
         try {
             return new ResponseEntity<>(clientService.getUserFromClient(idprefix), HttpStatus.OK);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>("Failed to retrieve the client user list", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Failed to retrieve the client user list", HttpStatus.NOT_FOUND);
         }
    }
 
@@ -99,7 +99,7 @@ public class ClientController {
        try {
            return new ResponseEntity<>(clientService.getClientSize(), HttpStatus.OK);
        } catch (RuntimeException e) {
-           return new ResponseEntity<>("Failed to retrieve the client user list", HttpStatus.BAD_REQUEST);
+           return new ResponseEntity<>("Failed to retrieve the client user list", HttpStatus.NO_CONTENT);
        }
    }
 
