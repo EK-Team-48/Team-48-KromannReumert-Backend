@@ -29,7 +29,7 @@ CREATE TABLE casee (
                       name VARCHAR(255) NOT NULL,
                       client_id BIGINT NOT NULL,
                       id_prefix BIGINT,
-                      responsible_user_id BIGINT
+                      responsible_user_user_id BIGINT
 );
 
 CREATE TABLE to_do (

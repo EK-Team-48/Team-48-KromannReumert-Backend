@@ -28,7 +28,6 @@ public class Casee {
     private Client client;
 
     @ManyToOne
-    @JoinColumn(name = "responsible_user_id")
     private User responsibleUser;
 
     @ManyToMany
