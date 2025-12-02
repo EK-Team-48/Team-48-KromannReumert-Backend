@@ -8,6 +8,7 @@ import com.example.kromannreumert.client.service.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.security.Principal;
 
@@ -27,18 +28,14 @@ public class ClientController {
     public ResponseEntity<?> getAllClients(Principal principal) {
         try {
             return new ResponseEntity<>(clientService.getAllClients(principal.getName()), HttpStatus.OK);
-        } catch (RuntimeException e) {
+        } catch (HttpClientErrorException.NotFound e) {
             return new ResponseEntity<>("Could not fetch all clients: " + e.getMessage(), HttpStatus.NO_CONTENT);
         }
     }
 
     @GetMapping("/{idprefix}")
     public ResponseEntity<?> getClientById(@PathVariable("idprefix") Long idprefix, Principal principal) {
-        try {
-            return new ResponseEntity<>(clientService.getClientByIdPrefix(idprefix, principal.getName()), HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>("Client not found by id: " + idprefix, HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(clientService.getClientByIdPrefix(idprefix, principal.getName()), HttpStatus.OK);
     }
 
     // This endpoints needs to be removed or changed as there can contain spaces in a client name.
