@@ -49,7 +49,7 @@ CREATE TABLE logging (
                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
                          actor VARCHAR(255) NOT NULL,
                          action VARCHAR(255) NOT NULL,
-                         details VARCHAR(255),
+                         details VARCHAR(2000),
                          timestamp TIMESTAMP NOT NULL
 );
 
@@ -60,9 +60,11 @@ CREATE TABLE client_assignee (
 );
 
 CREATE TABLE case_assignee (
-                               user_id BIGINT NOT NULL,
                                case_id BIGINT NOT NULL,
-                               PRIMARY KEY (user_id, case_id)
+                               user_id BIGINT NOT NULL,
+                               PRIMARY KEY (case_id, user_id),
+                               FOREIGN KEY (case_id) REFERENCES casee(id),
+                               FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE todo_assignee (
