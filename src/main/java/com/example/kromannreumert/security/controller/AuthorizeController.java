@@ -29,6 +29,13 @@ public class AuthorizeController {
         this.userService = userService;
     }
 
+    /**
+     * Authenticate the provided credentials and return a JWT authentication response.
+     *
+     * @param loginRequest DTO containing the username and password to authenticate
+     * @return ResponseEntity containing a JwtResponseDTO with the JWT and user details on successful authentication
+     * @throws com.example.kromannreumert.exception.customException.UserUnauthorized if authentication fails
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginRequest) {
         try {
