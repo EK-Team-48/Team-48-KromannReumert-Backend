@@ -10,12 +10,15 @@ INSERT INTO users ( username, name, email, password, created_date) VALUES
         ( 'partner01', 'Partner One', 'partner01@example.com',
         '$2b$10$sNAEc88AUC2MP4q7DeT2eOXsobi7enuU1KgEmO8KyIlC30dhPIm.K', '2024-01-05'),
         ( 'worker01', 'Case Worker', 'worker01@example.com',
-        '$2b$10$.6TqdMZDbXmx.Y/wy9ZYf.9IShXFr8u3vk7LoIJiINrApanl0Bavu', '2024-01-10');
+        '$2b$10$.6TqdMZDbXmx.Y/wy9ZYf.9IShXFr8u3vk7LoIJiINrApanl0Bavu', '2024-01-10'),
+        ('jurist01', 'Jurist One', 'jurist01@example.com',
+         '$2b$10$EeZg8T58OWK0avOXdKTUd.6Y..m1RRZgzJdOLq1XJUhWs8cXmBtDm', '2024-01-15');
 
 INSERT INTO user_roles (role_id, user_id) VALUES
         (1, 1),
         (2, 2),
-        (3, 3);
+        (3, 3),
+        (4, 4);
 
 INSERT INTO client ( name, idprefix) VALUES
         ( 'Kromann Reumert', 1000),
@@ -40,9 +43,11 @@ INSERT INTO client_assignee (user_id, client_id) VALUES
         (2, 2);
 
 INSERT INTO case_assignee (user_id, case_id) VALUES
-        (2, 1),
-        (3, 2);
+        (1, 2),
+        (2, 3),
+        (1, 4);
 
 INSERT INTO todo_assignee (user_id, todo_id) VALUES
-        (3, 1),
-        (2, 2);
+        (1, 3),
+        (2, 2),
+        (1, 4);

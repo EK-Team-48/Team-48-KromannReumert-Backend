@@ -60,13 +60,13 @@ CREATE TABLE client_assignee (
 );
 
 CREATE TABLE case_assignee (
-                               user_id BIGINT NOT NULL,
                                case_id BIGINT NOT NULL,
-                               PRIMARY KEY (user_id, case_id)
+                               user_id BIGINT NOT NULL,
+                               PRIMARY KEY (case_id, user_id)
 );
 
 CREATE TABLE todo_assignee (
-                               user_id BIGINT NOT NULL,
                                todo_id BIGINT NOT NULL,
-                               PRIMARY KEY (user_id, todo_id)
+                               user_id BIGINT NOT NULL,
+                               PRIMARY KEY (todo_id, user_id)
 );
