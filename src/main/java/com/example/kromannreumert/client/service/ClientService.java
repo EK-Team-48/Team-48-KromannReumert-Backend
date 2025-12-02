@@ -4,6 +4,7 @@ import com.example.kromannreumert.client.DTO.*;
 import com.example.kromannreumert.client.entity.Client;
 import com.example.kromannreumert.client.mapper.ClientMapper;
 import com.example.kromannreumert.client.repository.ClientRepository;
+import com.example.kromannreumert.exception.customException.ClientNotFoundException;
 import com.example.kromannreumert.logging.entity.LogAction;
 import com.example.kromannreumert.logging.service.LoggingService;
 import com.example.kromannreumert.user.entity.User;
@@ -48,10 +49,9 @@ public class ClientService {
 
     public ClientResponeDTO getClientByIdPrefix(Long idPrefix, String name){
         try {
-            Client client = clientRepository.getClientByIDPrefix(idPrefix).orElseThrow(() -> new RuntimeException("Client not found"));
+            Client client = clientRepository.getClientByIDPrefix(idPrefix).orElseThrow(() -> new ClientNotFoundException(idPrefix));
 
             loggingService.log(LogAction.VIEW_ONE_CLIENT, name, "Viewed client with id prefix: " + idPrefix);
-
             return clientMapper.toClientDTO(client);
         } catch (RuntimeException e) {
             loggingService.log(LogAction.VIEW_ONE_CLIENT_FAILED, name, "Failed to view client with id prefix: " + idPrefix);
