@@ -26,6 +26,12 @@ public class ToDoService {
     private final LoggingService loggingService;
     private final UserRepository userRepository;
 
+    /**
+     * Creates a ToDoService with its required repositories, mapper, and logging service.
+     *
+     * <p>Initializes the service with a ToDoRepository, ToDoMapper, LoggingService, and UserRepository used
+     * for data access, DTO mapping, action logging, and user lookup respectively.</p>
+     */
     public ToDoService(ToDoRepository toDoRepository, ToDoMapper toDoMapper, LoggingService loggingService, UserRepository userRepository) {
         this.toDoRepository = toDoRepository;
         this.toDoMapper = toDoMapper;
@@ -33,11 +39,27 @@ public class ToDoService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Get the total number of ToDo entities in the repository.
+     *
+     * @return the number of ToDo entities stored in the repository
+     */
     public int getToDoSize() {
         List<ToDo> getAll = toDoRepository.findAll();
         return getAll.size();
     }
 
+    /**
+     * Retrieve non-archived todos visible to the specified user, applying role-based filtering.
+     *
+     * <p>If the user has only the JURIST role (and not SAGSBEHANDLER, PARTNER, or ADMIN),
+     * only todos related to cases where the user is a case user are returned. Otherwise,
+     * all non-archived todos are returned.</p>
+     *
+     * @param username the username of the requesting user whose roles determine access scope
+     * @return a list of ToDoResponseDto representing the non-archived todos the user is allowed to view
+     * @throws RuntimeException if the user is not found or if fetching/processing todos fails
+     */
     public List<ToDoResponseDto> findAll(String username) {
         try {
             User user = userRepository.findByUsername(username)
@@ -71,11 +93,25 @@ public class ToDoService {
         }
     }
 
+    /**
+     * Checks whether the provided roles include a role with the given name (case-insensitive).
+     *
+     * @param roles    the set of Role objects to check
+     * @param roleName the role name to look for
+     * @return `true` if any role's name equals `roleName` ignoring case, `false` otherwise
+     */
     private boolean hasRole(Set<Role> roles, String roleName) {
         return roles.stream()
                 .anyMatch(role -> role.getRoleName().equalsIgnoreCase(roleName));
     }
 
+    /**
+     * Retrieve a ToDo by its id and map it to a response DTO.
+     *
+     * @param name the username performing the request (used for logging)
+     * @param id   the id of the ToDo to retrieve
+     * @return     a ToDoResponseDto representing the found ToDo
+     */
     public ToDoResponseDto findToDoById(String name, Long id) {
         try {
             ToDo toDo = toDoRepository.findById(id)
@@ -107,6 +143,13 @@ public class ToDoService {
         }
     }
 
+    /**
+     * Deletes the ToDo with the given id and logs the action.
+     *
+     * @param name the name of the user performing the deletion (used for logging)
+     * @param id   the identifier of the ToDo to delete
+     * @throws RuntimeException if the ToDo cannot be found or the deletion fails
+     */
     public void deleteTodo(String name, Long id) {
         try {
             ToDo toDo = toDoRepository.findById(id)
@@ -121,6 +164,15 @@ public class ToDoService {
         }
     }
 
+    /**
+     * Updates fields of an existing ToDo identified by id and returns its DTO representation.
+     *
+     * @param id the identifier of the ToDo to update
+     * @param name the username performing the update (used for logging)
+     * @param todoRequestDto DTO containing the updated ToDo fields
+     * @return the updated ToDo mapped to a ToDoResponseDto
+     * @throws RuntimeException if the ToDo is not found or the update fails
+     */
     public ToDoResponseDto updateTodo(Long id, String name, ToDoRequestDto todoRequestDto) {
         try {
             ToDo todo = toDoRepository.findById(id)
@@ -146,6 +198,13 @@ public class ToDoService {
         }
     }
 
+    /**
+     * Retrieves all non-archived todos assigned to the specified user.
+     *
+     * @param username the username whose assigned todos will be returned
+     * @return a list of ToDoResponseDto representing the user's non-archived assigned todos
+     * @throws RuntimeException if fetching assigned todos fails
+     */
     public List<ToDoResponseDto> findAssignedToUser(String username) {
         try {
             List<ToDo> toDos = toDoRepository.findDistinctByUsers_UsernameAndArchivedFalse(username);

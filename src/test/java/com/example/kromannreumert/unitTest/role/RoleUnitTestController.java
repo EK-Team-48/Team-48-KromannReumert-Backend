@@ -110,6 +110,11 @@ public class RoleUnitTestController {
     }
 
 
+    /**
+     * Verifies that an authenticated admin can create a role and receives HTTP 201 with the created role's id and `roleName`.
+     *
+     * @throws Exception if an error occurs while performing the request or asserting the response
+     */
     @Test
     @WithMockUser(username = "testUser", roles = "ADMIN")
     void createRoleWhileLoggedIn() throws Exception{

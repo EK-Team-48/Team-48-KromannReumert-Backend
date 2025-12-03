@@ -93,6 +93,12 @@ public class ToDoUnitTestController {
                 .andExpect(status().isUnauthorized());
     }
 
+    /**
+     * Verifies that an authenticated SAGSBEHANDLER user receives the list of todos assigned to them.
+     *
+     * Stubs the service to return a single ToDoResponseDto and asserts the endpoint returns HTTP 200 with
+     * a JSON array of length 1 where the first element has the expected `id` and `name`.
+     */
     @Test
     @WithMockUser(username = "worker01", roles = "SAGSBEHANDLER")
     void getAssignedTodosWhileLoggedIn_returnsList() throws Exception {
@@ -288,6 +294,14 @@ public class ToDoUnitTestController {
                 .andExpect(jsonPath("$.archived").value(responseDto.archived()));
     }
 
+    /**
+     * Verifies that attempting to update a non-existent ToDo results in HTTP 404 Not Found.
+     *
+     * Mocks the service layer to throw a RuntimeException for the given id and asserts that
+     * a PUT request to /api/v1/todos/{id} returns a 404 status.
+     *
+     * @throws Exception if the MVC request processing fails
+     */
     @Test
     @WithMockUser(username = "jurist", roles = "JURIST")
     void updateToDoNotFound() throws Exception {
