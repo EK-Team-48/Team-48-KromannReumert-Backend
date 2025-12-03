@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
         loggingService.log(
                 ex.getLogAction(),
                 ex.getActor(),
-                ex.getCause().getMessage()
+                ex.getCause() != null ? ex.getCause().getMessage() : "Unknown error"
         );
 
         return ResponseEntity.status(500).body("Internal error during: " + ex.getLogAction());

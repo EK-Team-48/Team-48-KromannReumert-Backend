@@ -150,7 +150,7 @@ public class ClientService {
             loggingService.log(LogAction.CREATE_CLIENT, actor,
                     "Created client: " + client.getName());
 
-            return "Client created successfully";
+            return "Client successfully created: " + client.getName();
 
         } catch (Exception e) {
             if (e instanceof ApiBusinessException) throw e;
@@ -180,7 +180,7 @@ public class ClientService {
             loggingService.log(LogAction.UPDATE_CLIENT, actor,
                     "Updated client name to: " + dto.newName());
 
-            return "Client name updated";
+            return "Successfully updated client with: " + dto.newName();
 
         } catch (Exception e) {
             if (e instanceof ApiBusinessException) throw e;
@@ -210,7 +210,7 @@ public class ClientService {
             loggingService.log(LogAction.UPDATE_CLIENT, actor,
                     "Updated client prefix");
 
-            return "Client prefix updated";
+            return "Successfully updated client with: " + dto.idPrefix();
 
         } catch (Exception e) {
             if (e instanceof ApiBusinessException) throw e;
@@ -260,7 +260,7 @@ public class ClientService {
             loggingService.log(LogAction.DELETE_CLIENT, actor,
                     "Deleted client id=" + id);
 
-            return "Client deleted";
+            return "Client with id: " + id + " has been deleted";
 
         } catch (Exception e) {
             if (e instanceof ApiBusinessException) throw e;
