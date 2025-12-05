@@ -224,6 +224,7 @@ public class ClientUnitTest {
         Long id = 1L;
         Client client = new Client(id, clientName, Set.of(), idPrefix);
 
+        when(clientRepository.findById(client.getId())).thenReturn(Optional.of(client));
         doNothing().when(clientRepository).deleteById(id);
 
         // ACT
